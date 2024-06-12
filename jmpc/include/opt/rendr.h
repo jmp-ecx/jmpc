@@ -53,6 +53,7 @@ int  should_quit( void );
 int  mousebutton_left( void );
 int  mousebutton_right( void );
 
+// TODO
 vec2 mouse_pos(Window *win);
 
 #endif // __JMPC_OPT_RENDERER_H

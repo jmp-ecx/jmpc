@@ -1,6 +1,9 @@
 #define __JMPC_RENDR_IMPL_PRIVATE_DECL
 #include <opt/rendr.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef Jmp_WIN
@@ -551,7 +554,23 @@ PxBuffer *pxbuf_new(sz width, sz height) {
 }
 
 PxBuffer *pxbuf_from_img(const char *fpath) {
-  // TODO - stb image load.
+  int w, h, c;
+  u8 *data = stbi_load(fpath, &w, &h, &c, 4);
+  if (data == NULL) exit(-3);
+  
+  PxBuffer *buf = pxbuf_new(w, h);
+  
+  sz i = 0;
+  u32 tmp = 0;
+  for (sz j = 0; j < w*h*4; ++j) {
+    tmp <<= 8;
+    tmp |= data[j++];
+    if (j % 4 == 0) {
+      buf->buf[i++] = tmp;
+    }
+  }
+  
+  return buf;
 }
 
 void pxbuf_destroy(PxBuffer* buf) {
