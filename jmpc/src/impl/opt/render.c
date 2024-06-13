@@ -653,9 +653,8 @@ void poll_updates( void ) {
 
 vec2 mouse_pos(Window *win) {
   POINT point;
-  if (!GetCursorPos(&point)) {
-    return (vec2) { 0, 0 };
-  }
+  if (!GetCursorPos(&point)) return (vec2) { 0, 0 };
+  ScreenToClient(win, &point);
   return (vec2) {
     point.x,
     point.y,

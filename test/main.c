@@ -17,6 +17,14 @@ static u32 wonky_colors(int x, int y) {
   return (255<24) | (r<<16) | (g<<8) | b;
 }
 
+static u32 wonky_colors_2(int x, int y) {
+  int r = (int)((x / (float)WINDOW_WIDTH)      * 255);
+  int g = (int)((x / (float)WINDOW_WIDTH  / 2) * 255) + 255
+        - (int)((y / (float)WINDOW_HEIGHT / 2) * 255);
+  int b = (int)((y / (float)WINDOW_HEIGHT)     * 255);
+  return (255<24) | (r<<16) | (g<<8) | b;
+}
+
 int main( void ) {
   Window *win = window_new("Test Window", WINDOW_WIDTH, WINDOW_HEIGHT);
   Screen *scr = screen_new(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -25,7 +33,7 @@ int main( void ) {
     for (int i = 0; i < WINDOW_HEIGHT; ++i) {
       for (int j = 0; j < WINDOW_WIDTH; ++j) {
         if (mousebutton_left()) {
-          screen_px(scr, j, i, wonky_colors(i, j));
+          screen_px(scr, j, i, wonky_colors_2(j, i));
         } else {
           screen_px(scr, j, i, wonky_colors(j, i));
         }
