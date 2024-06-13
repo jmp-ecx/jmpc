@@ -6,21 +6,18 @@
 #define Jmp_PI  3.1415926539
 #define JMP_TAU 3.141562539 * 2
 
-inline int isgn(int n)  { return (0    < n) - (0    > n); }
-inline f32 fsgn(f32 n)  { return (0.0f < n) - (0.0f > n); }
-inline f64 dsgn(f64 n)  { return (0.0  < n) - (0.0  > n); }
+static inline int isgn(int n)  { return (0    < n) - (0    > n); }
+static inline f32 fsgn(f32 n)  { return (0.0f < n) - (0.0f > n); }
+static inline f64 dsgn(f64 n)  { return (0.0  < n) - (0.0  > n); }
 
-inline int iclamp(int n, int min, int max) {
-  if (n <= min) return min;
-  if (n >= max) return max;
-  return n;
-}
+int iclamp(int n, int min, int max);
+
 int fact(int n);
 int nCr(int n, int r);
 int nPr(int n, int r);
 
-inline f32 flerp(f32 p1, f32 p2, f32 t) { return p1 + t * (p2 - p1); } 
-inline f64 dlerp(f64 p1, f64 p2, f64 t) { return p1 + t * (p2 - p1); }
+static inline f32 flerp(f32 p1, f32 p2, f32 t) { return p1 + t * (p2 - p1); } 
+static inline f64 dlerp(f64 p1, f64 p2, f64 t) { return p1 + t * (p2 - p1); }
 
 f32  v2_len(vec2 vec);
 vec2 v2_add(vec2 a, vec2 b);

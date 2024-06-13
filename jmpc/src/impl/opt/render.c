@@ -1,5 +1,6 @@
 #define __JMPC_RENDR_IMPL_PRIVATE_DECL
 #include <opt/rendr.h>
+#include <jmp/math.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -652,13 +653,15 @@ void poll_updates( void ) {
 }
 
 vec2 mouse_pos(Window *win) {
-  POINT point;
-  if (!GetCursorPos(&point)) return (vec2) { 0, 0 };
-  ScreenToClient(win, &point);
-  return (vec2) {
-    point.x,
-    point.y,
-  };
+  POINT p;
+  
+  if (!GetCursorPos(&p)) return (vec2) { 0, 0 };
+  ScreenToClient(win->hwnd, &p);
+  
+  int x = iclamp(p.x, 0, win->width);
+  int y = iclamp(p.y, 0, win->height);
+  
+  return (vec2) { x, y };
 }
 #endif // Window operations, for the Windows OS
 
