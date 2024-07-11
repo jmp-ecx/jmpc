@@ -11,6 +11,7 @@
   #include <windows.h>
 #endif
 
+// TODO - loading fonts from a custom font file.
 static const u8 chars[40][CHAR_H][CHAR_W] = {
   {
     { 0, 0, 0, 0, 0 },

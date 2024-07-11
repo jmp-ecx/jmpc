@@ -7,5 +7,6 @@
 #include <jmp/math.h>
 #include <jmp/str.h>
 #include <jmp/dbg.h>
+#include <jmp/ll.h>
 
 #endif // __JMPC_H

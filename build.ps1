@@ -19,6 +19,7 @@ $lib_src = @( # The source files for the library.
     "impl/math",
     "impl/mem",
     "impl/str",
+    "impl/os",
     "impl/opt/render",
     "impl/opt/debug"
 )
