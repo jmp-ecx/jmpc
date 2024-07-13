@@ -75,6 +75,9 @@ function get_file_dir {
     if ($p.length -eq 1) { return }
 
     $tmp = $p[-$p.length..-2]
+
+    echo $P
+    echo $tmp
     
     $path = 'build'
     foreach ($d in $tmp) {
