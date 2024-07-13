@@ -17,6 +17,18 @@ int jmp_streq(char* str1, char* str2) {
   return 1;
 }
 
+int jmp_streq2(char* str1, int idx, char* str2) {
+  int s = 0;
+  while (str1[idx+s++]) ;
+  if (s-- != jmp_strlen(str2)) return 0;
+  
+  int l = jmp_strlen(str2);
+  for (int i = 0; i < l; ++i)
+    if (str1[idx+i] != str2[i]) return 0;
+  
+  return 1;
+}
+
 void  jmp_strcpy(char* dest, char* str) {
   int i = 0;
   while (str[i]) dest[i] = str[i++];
