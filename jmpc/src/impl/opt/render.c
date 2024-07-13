@@ -417,6 +417,10 @@ static const u8 chars[40][CHAR_H][CHAR_W] = {
 static const u8* glyphs = chars; // This is for a hacky workaround to an issue I don't know how to solve.
 
 static int event_state[3] = { 0 };
+struct {
+  vec2 pos;
+  int buttons;
+} Mouse = { 0 };
 
 struct Window {
   int width, height;
@@ -597,11 +601,20 @@ void pxbuf_px(PxBuffer* buf, sz x, sz y, u32 col) {
 
 #ifdef Jmp_WIN
 static LRESULT window_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-  if (msg == WM_CLOSE) {
-    DestroyWindow(hwnd);
-  }
-  else if (msg == WM_DESTROY) {
-    PostQuitMessage(0);
+  switch (msg) {
+    case WM_QUIT: event_state[JMP_QUIT] = 1; break;
+    case WM_CLOSE: DestroyWindow(hwnd);      break;
+    case WM_DESTROY: PostQuitMessage(0);     break;
+    case WM_MOUSEMOVE: {
+      Mouse.pos = (vec2) {
+        .x = LOWORD(lparam),
+        .y = HIWORD(lparam),
+      };
+    } break;
+    case WM_LBUTTONDOWN: Mouse.buttons |= 0b00000001; break;
+    case WM_LBUTTONUP:   Mouse.buttons &= 0b11111110; break;
+    case WM_RBUTTONDOWN: Mouse.buttons |= 0b00000010; break;
+    case WM_RBUTTONUP:   Mouse.buttons &= 0b11111101; break;
   }
   return DefWindowProc(hwnd, msg, wparam, lparam);
 };
@@ -643,30 +656,17 @@ void poll_updates( void ) {
   MSG msg;
   while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
     switch (msg.message) {
-      case WM_QUIT:        event_state[JMP_QUIT]        = 1; break;
-      case WM_LBUTTONDOWN: event_state[JMP_LFT_MBUTTON] = 1; break;
-      case WM_LBUTTONUP:   event_state[JMP_LFT_MBUTTON] = 0; break;
-      case WM_RBUTTONDOWN: event_state[JMP_RT_MBUTTON]  = 1; break;
-      case WM_RBUTTONUP:   event_state[JMP_RT_MBUTTON]  = 0; break;
+      case WM_QUIT:        event_state[JMP_QUIT] = 1; break;
+
     }
     TranslateMessage(&msg);
     DispatchMessage(&msg);
   }
 }
-
-vec2 mouse_pos(Window *win) {
-  POINT p;
-  
-  if (!GetCursorPos(&p)) return (vec2) { 0, 0 };
-  ScreenToClient(win->hwnd, &p);
-  
-  int x = iclamp(p.x, 0, win->width);
-  int y = iclamp(p.y, 0, win->height);
-  
-  return (vec2) { x, y };
-}
 #endif // Window operations, for the Windows OS
 
 int should_quit( void ) { return event_state[JMP_QUIT]; }
-int mousebutton_left( void ) {return event_state[JMP_LFT_MBUTTON]; }
-int mousebutton_right( void ) {return event_state[JMP_RT_MBUTTON]; }
+
+int mousebutton_left( void ) { return Mouse.buttons & MButton_Left; }
+int mousebutton_right( void ) { return Mouse.buttons & MButton_Right >> 1; }
+vec2 mouse_pos(Window *win) { return Mouse.pos; }

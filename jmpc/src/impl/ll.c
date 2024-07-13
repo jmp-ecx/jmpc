@@ -21,7 +21,7 @@ void ll_destroy(llnode *root) {
   free(node);
 }
 
-void ll_insert(llnode *root, void *data) {
+void ll_append(llnode *root, void *data) {
   llnode *node = ll_new(data);
   
   llnode *end = ll_end(root);

@@ -17,8 +17,10 @@
 #define CHAR_H 8
 
 #define JMP_QUIT 0
-#define JMP_LFT_MBUTTON 1
-#define JMP_RT_MBUTTON 2
+enum {
+  MButton_Left  = 0b00000001,
+  MButton_Right = 0b00000010,
+};
 
 #ifndef __JMPC_RENDR_IMPL_PRIVATE_DECL
   typedef void Window;
@@ -53,7 +55,6 @@ int  should_quit( void );
 int  mousebutton_left( void );
 int  mousebutton_right( void );
 
-// TODO
 vec2 mouse_pos(Window *win);
 
 #endif // __JMPC_OPT_RENDERER_H
