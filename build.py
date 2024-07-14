@@ -1,4 +1,3 @@
-import pathlib as path
 import os, sys
 
 args = sys.argv[1:]
@@ -12,6 +11,7 @@ lib_src   = [ 'impl/types',
               'impl/str',
               'impl/os',
               'impl/ll',
+              'impl/arr',
               'impl/opt/render',
               'impl/opt/debug' ]
 lib_obj   = []

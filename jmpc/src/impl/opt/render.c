@@ -620,11 +620,11 @@ static LRESULT window_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 };
 
 Window *window_new(char* name, int width, int height) {
-  SetProcessDPIAware();
   WNDCLASS wc = { CS_CLASSDC, window_proc };
   wc.lpszClassName = name;
   wc.hCursor = LoadCursor(NULL, IDC_ARROW);
   RegisterClass(&wc);
+  SetProcessDPIAware();
 
   HWND hwnd = CreateWindow(wc.lpszClassName, name,
     WS_OVERLAPPED | WS_SYSMENU | WS_VISIBLE,

@@ -27,11 +27,16 @@ typedef struct Vector2 {
 } vec2;
 
 typedef struct Vector3 {
-  i32 x, y, z;
+  union { i32 x, r; };
+  union { i32 y, g; };
+  union { i32 z, b; };
 } vec3;
 
 typedef struct Vector4 {
-  i32 x, y, z, w;
+  union { i32 x, r; };
+  union { i32 y, g; };
+  union { i32 z, b; };
+  union { i32 w, a; };
 } vec4;
 
 typedef struct Vector2f {
@@ -39,11 +44,16 @@ typedef struct Vector2f {
 } vec2f;
 
 typedef struct Vector3f {
-  f32 x, y, z;
+  union { f32 x, r; };
+  union { f32 y, g; };
+  union { f32 z, b; };
 } vec3f;
 
 typedef struct Vector4f {
-  f32 x, y, z, w;
+  union { f32 x, r; };
+  union { f32 y, g; };
+  union { f32 z, b; };
+  union { f32 w, a; };
 } vec4f;
 
 // TODO - matricies
