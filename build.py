@@ -1,6 +1,7 @@
-import os, sys
+import os, sys, shutil
 
 args = sys.argv[1:]
+if len(args) == 0: args.append('')
 
 bin_dir   =   'bin'
 build_dir =   'build'
@@ -52,15 +53,17 @@ def check_dir_exists(file: str) -> None:
 def build_test() -> None:
   # Todo - include libgdi in jmpc.lib, instead of having to manually include it.
   write_header('=== Build Tests ===', 'blue')
-  os.system(f'gcc -I{lib_inc_dir} -std=c99 -Wno-incompatible-pointer-types -o {bin_dir}/test.exe test/main.c {bin_dir}/jmpc.lib lib/gdi32.lib')
+  os.system(f'gcc -I{bin_dir}/jmpc/include -std=c99 -Wno-incompatible-pointer-types -o {bin_dir}/test.exe test/main.c {bin_dir}/jmpc/jmpc.lib lib/gdi32.lib')
   
 if args[0] == 'test-only':
   build_test()
   quit()
   
 # Todo - check if the `build` and `bin` dirs exist.
-if not os.path.exists(f'./{bin_dir}'):   os.makedirs(bin_dir)
-if not os.path.exists(f'./{build_dir}'): os.makedirs(build_dir)
+if not os.path.exists(f'./{bin_dir}'):      os.makedirs(bin_dir)
+if not os.path.exists(f'./{build_dir}'):    os.makedirs(build_dir)
+
+if not os.path.exists(f'./{bin_dir}/jmpc'):         os.makedirs(f'{bin_dir}/jmpc')
 
 write_header(' === Compile Objects ===', 'blue')
 
@@ -72,7 +75,10 @@ for file in lib_src:
 write_header(' === Linking ===', 'blue')
 
 files = ' '.join(lib_obj)
-os.system(f'ar rcs {bin_dir}/{lib}.lib {files}')
+os.system(f'ar rcs {bin_dir}/jmpc/{lib}.lib {files}')
+
+shutil.rmtree(f'{bin_dir}/jmpc/include')
+shutil.copytree('./jmpc/include', f'{bin_dir}/jmpc/include', False, None)
 
 if args[0] == 'test':
   build_test()
