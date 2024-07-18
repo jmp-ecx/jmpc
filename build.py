@@ -12,9 +12,9 @@ lib_src   = [ 'impl/types',
               'impl/str',
               'impl/os',
               'impl/ll',
-              'impl/arr',
-              'impl/opt/render',
-              'impl/opt/debug' ]
+              'impl/arr', ]
+opt_src   = [ 'impl/opt/render',
+              'impl/opt/debug', ]
 lib_obj   = []
 
 lib_inc_dir = 'jmpc/include'
@@ -71,14 +71,24 @@ for file in lib_src:
   check_dir_exists(file)
   write_header(f'compiling {file}.c', 'green')
   build_obj(file)
+  
+if 'opt' in args:
+  for file in opt_src:
+    check_dir_exists(file)
+    write_header(f'compiling {file}.c', 'green')
+    build_obj(file)
 
 write_header(' === Linking ===', 'blue')
+
+shutil.rmtree(f'{bin_dir}/jmpc/include')
+shutil.copytree('./jmpc/include', f'{bin_dir}/jmpc/include', False, None)
+if not 'opt' in args:
+  shutil.rmtree(f'{bin_dir}/jmpc/include/opt')
+  shutil.rmtree(f'{bin_dir}/jmpc/include/stb')
 
 files = ' '.join(lib_obj)
 os.system(f'ar rcs {bin_dir}/jmpc/{lib}.lib {files}')
 
-shutil.rmtree(f'{bin_dir}/jmpc/include')
-shutil.copytree('./jmpc/include', f'{bin_dir}/jmpc/include', False, None)
 
-if args[0] == 'test':
+if 'test' in args:
   build_test()

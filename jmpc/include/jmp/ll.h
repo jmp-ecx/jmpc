@@ -1,6 +1,8 @@
 #ifndef __JMPC_LL_H
 #define __JMPC_LL_H
 
+#include <jmp/types.h>
+
 typedef struct ll_node {
   struct ll_node *next;
   struct ll_node *prev;
