@@ -17,19 +17,22 @@ typedef uint64_t u64;
 
 typedef size_t sz;
 
+typedef char* cstr;
+
 // === FLOATING POINT TYPES ===
 typedef float  f32;
 typedef double f64;
 
 // === VECTOR TYPES ===
 typedef struct Vector2 {
-  i32 x, y;
+  union { i32 x, i; };
+  union { i32 y, j; };
 } vec2;
 
 typedef struct Vector3 {
-  union { i32 x, r; };
-  union { i32 y, g; };
-  union { i32 z, b; };
+  union { i32 x, r, i; };
+  union { i32 y, g, j; };
+  union { i32 z, b, k; };
 } vec3;
 
 typedef struct Vector4 {
@@ -40,13 +43,14 @@ typedef struct Vector4 {
 } vec4;
 
 typedef struct Vector2f {
-  f32 x, y;
+  union { f32 x, i; };
+  union { f32 y, j; };
 } vec2f;
 
 typedef struct Vector3f {
-  union { f32 x, r; };
-  union { f32 y, g; };
-  union { f32 z, b; };
+  union { f32 x, r, i; };
+  union { f32 y, g, j; };
+  union { f32 z, b, k; };
 } vec3f;
 
 typedef struct Vector4f {

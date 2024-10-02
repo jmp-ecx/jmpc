@@ -16,6 +16,7 @@ llnode *ll_new(void *data);
 void ll_destroy(llnode *root);
 
 void ll_append(llnode *root, void *data);
+void ll_insert(llnode *root, sz idx, void *data);
 llnode *ll_get(llnode *root, sz idx);
 llnode *ll_end(llnode *root);
 sz ll_len(llnode *root);

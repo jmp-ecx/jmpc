@@ -1,6 +1,6 @@
 #include <jmp/os.h>
 
-int flen(FILE *fptr) {
+int flen(FILE *fptr) { // Using libc
   int size;
   
   fseek(fptr, 0L, SEEK_END);

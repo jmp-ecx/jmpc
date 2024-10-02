@@ -1,22 +1,18 @@
 #include <stdio.h>
 
 #include <jmp.h>
-#include <opt/rendr.h>
 
 int main( void ) {
-  Window *win = window_new("Test Window", 800, 600);
-  Screen *scr = screen_new(800, 600);
+  rbuf_t *buf = rbuf_new(16, 4);
   
-  while (!should_quit()) {
-    poll_updates();
-    
-    screen_clear(scr, color(0x2f2f2fff)); {
-      // Draw on the screen.
-    } window_draw(win, scr);
-  }
+  int a = 13;
+  int b = 255;
   
-  screen_destroy(scr);
-  window_destroy(win);
+  rbuf_write(buf, (void*)a);
+  rbuf_write(buf, (void*)b);
+  
+  printf("%d\n", rbuf_read(buf, int));
+  printf("%d\n", rbuf_read(buf, int));
   
   return 0;
 }

@@ -20,10 +20,9 @@ void dyn_arr_resize(dyn_arr* arr, sz new_size) {
 }
 
 void dyn_arr_append(dyn_arr* arr, void* data) {
-  // arr->ptr[arr->size] = data;
-  arr->size++;
+  arr->ptr[arr->size++] = data;
   
   if (arr->size == arr->cap) {
-    dyn_arr_resize(arr, arr->size * 2);
+    dyn_arr_resize(arr, arr->size * 2); // TODO - find a better number.
   }
 }

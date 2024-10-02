@@ -3,6 +3,18 @@ import os, sys, shutil
 args = sys.argv[1:]
 if len(args) == 0: args.append('')
 
+if args[0] == 'help':
+  print('''
+  Jmpc Build Script:
+    python build.py <options>
+  
+  Options:
+    <Blank>   :: Only build the library.
+    test      :: Builds the library, along with tests.
+    test-only :: Only builds the test files.
+    opt       :: Include optional utilities.
+  ''')
+
 bin_dir   =   'bin'
 build_dir =   'build'
 lib       =   'jmpc'
@@ -12,12 +24,24 @@ lib_src   = [ 'impl/types',
               'impl/str',
               'impl/os',
               'impl/ll',
-              'impl/arr', ]
+              'impl/arr',
+              'impl/color', ]
 opt_src   = [ 'impl/opt/render',
               'impl/opt/debug', ]
 lib_obj   = []
 
 lib_inc_dir = 'jmpc/include'
+
+lib_includes = [
+  lib_inc_dir,
+  'lib/stb',
+]
+
+def gen_includes(includes: list[str]) -> str:
+  res = ''
+  for i in includes:
+    res += f'-I{i} '
+  return res
 
 def write_header(txt: str, color: str) -> None:
   col = ''
@@ -34,8 +58,10 @@ def write_header(txt: str, color: str) -> None:
   print(f'{col}{txt}\033[0m')
   
 def build_obj(file: str) -> None:
-  os.system(f'gcc -I{lib_inc_dir} -Ilib/stb -std=c99 -Wno-incompatible-pointer-types -c -o {build_dir}/{file}.obj jmpc/src/{file}.c')
-  lib_obj.append(f'build/{file}.obj')
+  os.system(f'gcc {gen_includes(lib_includes)} -std=c99 ' \
+            f'-Wno-incompatible-pointer-types -Wno-int-conversion ' \
+            f'-c -o {build_dir}/{file}.obj jmpc/src/{file}.c')
+  lib_obj.append(f'{build_dir}/{file}.obj')
   
 def check_dir_exists(file: str) -> None:
   p = file.split('/')
@@ -46,14 +72,14 @@ def check_dir_exists(file: str) -> None:
   
   path = 'build'
   for d in p:
-    tpath = f'{path}/{d}'
-    if not os.path.exists(tpath): os.makedirs(tpath)
-    path += f'/{d}'
+    path = f'{path}/{d}'
+    if not os.path.exists(path): os.makedirs(path)
   
 def build_test() -> None:
-  # Todo - include libgdi in jmpc.lib, instead of having to manually include it.
-  write_header('=== Build Tests ===', 'blue')
-  os.system(f'gcc -I{bin_dir}/jmpc/include -std=c99 -Wno-incompatible-pointer-types -o {bin_dir}/test.exe test/main.c {bin_dir}/jmpc/jmpc.lib lib/gdi32.lib')
+  write_header('=== Build Tests ===', 'cyan')
+  os.system(f'gcc -I{bin_dir}/jmpc/include -std=c99 ' \
+            f'-Wno-pointer-to-int-cast -Wno-incompatible-pointer-types -Wno-int-to-pointer-cast ' \
+            f'-o {bin_dir}/test.exe test/main.c {bin_dir}/jmpc/jmpc.lib')
   
 if args[0] == 'test-only':
   build_test()
@@ -63,9 +89,9 @@ if args[0] == 'test-only':
 if not os.path.exists(f'./{bin_dir}'):      os.makedirs(bin_dir)
 if not os.path.exists(f'./{build_dir}'):    os.makedirs(build_dir)
 
-if not os.path.exists(f'./{bin_dir}/jmpc'):         os.makedirs(f'{bin_dir}/jmpc')
+if not os.path.exists(f'./{bin_dir}/jmpc'): os.makedirs(f'{bin_dir}/jmpc')
 
-write_header(' === Compile Objects ===', 'blue')
+write_header(' === Compile Objects ===', 'cyan')
 
 for file in lib_src:
   check_dir_exists(file)
@@ -77,8 +103,9 @@ if 'opt' in args:
     check_dir_exists(file)
     write_header(f'compiling {file}.c', 'green')
     build_obj(file)
+  lib_obj.append('lib/gdi32.lib')
 
-write_header(' === Linking ===', 'blue')
+write_header(' === Linking ===', 'cyan')
 
 shutil.rmtree(f'{bin_dir}/jmpc/include')
 shutil.copytree('./jmpc/include', f'{bin_dir}/jmpc/include', False, None)
@@ -88,7 +115,6 @@ if not 'opt' in args:
 
 files = ' '.join(lib_obj)
 os.system(f'ar rcs {bin_dir}/jmpc/{lib}.lib {files}')
-
 
 if 'test' in args:
   build_test()

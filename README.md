@@ -20,13 +20,13 @@ tbh, I was learning on the fly this whole time)
  - [ ] Matricies.
 
 ## Building
-To build the library for windows, use the `build.ps1` file.
+To build the library for windows, use the `build.py` file.
 ```
-./build
+python build.py
 ```
 
 If you also want to build the test file, add the `test` option
 ```
-./build test
+python build.py test
 ./bin/test
 ```

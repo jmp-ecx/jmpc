@@ -8,5 +8,6 @@
 #include <jmp/str.h>
 #include <jmp/dbg.h>
 #include <jmp/ll.h>
+#include <jmp/arr.h>
 
 #endif // __JMPC_H

@@ -14,12 +14,13 @@ void  jmp_dbg_free(void* ptr, const char *FILE, const int LINE);
 #ifdef Jmp_DEBUG_MEMORY_TRACER
   #ifdef malloc
     #undef malloc
-    #define malloc(size) jmp_dbg_malloc(size, __FILE__, __LINE__)
   #endif
   #ifdef free
     #undef free
-    #define #define free(ptr) jmp_dbg_free(ptr, __FILE__, __LINE__)
-#endif
+  #endif
+  
+  #define malloc(size) jmp_dbg_malloc(size, __FILE__, __LINE__)
+  #define free(ptr) jmp_dbg_free(ptr, __FILE__, __LINE__)
 #endif // Jmp_DEBUG_MEMORY_TRACER
 
 #endif // __JMPC_DBG_H

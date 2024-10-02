@@ -14,6 +14,7 @@
 #define Jmp_16MiB 16777216
 #define Jmp_64MiB 67108864
 #define Jmp_1GiB  1073741824
+#define Jmp_4GiB  4294967296
 
 // Macros to calculate an arbitrary byte size.
 #define Jmp_TiB(s) (s * 1024 * 1024 * 1024 * 1024)
@@ -28,16 +29,28 @@
 #define realloc(ptr, size)  realloc(ptr, size)
 #define free(ptr)           free(ptr)
 
-// A custom linear arena allocator.
-typedef struct {
+typedef struct Arena {
   sz mem_sz;
   sz alloc_ptr;
+  sz read_ptr;
   u8 mem[];
-} Arena;
+} arena_t;
 
-Arena* Arena_new(sz size);
-void   Arena_destroy(Arena* arena);
-void*  Arena_alloc(Arena* arena, sz size);
-void   Arena_free(Arena* arena);
+typedef struct RingBuffer {
+  sz buf_sz, data_sz;
+  sz read_idx, write_idx;
+  u8 mem[];
+} rbuf_t;
+
+arena_t* arena_new(sz size);
+void*    arena_alloc(arena_t* arena, sz size);
+void     arena_free(arena_t* arena);
+
+rbuf_t* rbuf_new(sz buffer_size, sz data_size);
+void    rbuf_write(rbuf_t* buf, void* data);
+void*   rbuf_get(rbuf_t* buf);
+#define rbuf_read(buf, type) (type)rbuf_get(buf)
+
+void destroy(void* region);
 
 #endif // __JMPC_MEM_H
