@@ -43,7 +43,7 @@ def gen_includes(includes: list[str]) -> str:
     res += f'-I{i} '
   return res
 
-def write_header(txt: str, color: str) -> None:
+def header(txt: str, color: str) -> str:
   col = ''
   match color.lower():
     case 'black':      col = '\033[0;30m'
@@ -55,7 +55,7 @@ def write_header(txt: str, color: str) -> None:
     case 'cyan':       col = '\033[0;36m'
     case 'light grey': col = '\033[0;37m'
     case _:            col = ''
-  print(f'{col}{txt}\033[0m')
+  return f'{col}{txt}\033[0m'
   
 def build_obj(file: str) -> None:
   os.system(f'gcc {gen_includes(lib_includes)} -std=c99 ' \
@@ -76,7 +76,7 @@ def check_dir_exists(file: str) -> None:
     if not os.path.exists(path): os.makedirs(path)
   
 def build_test() -> None:
-  write_header('=== Build Tests ===', 'cyan')
+  print(header('=== Build Tests ===', 'cyan'))
   os.system(f'gcc -I{bin_dir}/jmpc/include -std=c99 ' \
             f'-Wno-pointer-to-int-cast -Wno-incompatible-pointer-types -Wno-int-to-pointer-cast ' \
             f'-o {bin_dir}/test.exe test/main.c {bin_dir}/jmpc/jmpc.lib')
@@ -91,21 +91,21 @@ if not os.path.exists(f'./{build_dir}'):    os.makedirs(build_dir)
 
 if not os.path.exists(f'./{bin_dir}/jmpc'): os.makedirs(f'{bin_dir}/jmpc')
 
-write_header(' === Compile Objects ===', 'cyan')
+print(header(' === Compile Objects ===', 'cyan'))
 
 for file in lib_src:
   check_dir_exists(file)
-  write_header(f'compiling {file}.c', 'green')
+  print(header(f'compiling {file}.c', 'green'))
   build_obj(file)
   
 if 'opt' in args:
   for file in opt_src:
     check_dir_exists(file)
-    write_header(f'compiling {file}.c', 'green')
+    print(header(f'compiling {file}.c', 'green'))
     build_obj(file)
   lib_obj.append('lib/gdi32.lib')
 
-write_header(' === Linking ===', 'cyan')
+print(header(' === Linking ===', 'cyan'))
 
 shutil.rmtree(f'{bin_dir}/jmpc/include')
 shutil.copytree('./jmpc/include', f'{bin_dir}/jmpc/include', False, None)
