@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-color_t Color_rgba_4i(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+color_t Color_rgba_4i(u8 r, u8 g, u8 b, u8 a) {
   return (color_t) {
     .r = (float)r / 255.0f,
     .g = (float)g / 255.0f,
@@ -11,7 +11,7 @@ color_t Color_rgba_4i(unsigned char r, unsigned char g, unsigned char b, unsigne
   };
 }
 
-color_t Color_rgb_3i(unsigned char r, unsigned char g, unsigned char b) {
+color_t Color_rgb_3i(u8 r, u8 g, u8 b) {
   return (color_t) {
     .r = (float)r / 255.0f,
     .g = (float)g / 255.0f,
@@ -20,7 +20,7 @@ color_t Color_rgb_3i(unsigned char r, unsigned char g, unsigned char b) {
   };
 }
 
-color_t Color_rgb_1i(unsigned int c) {
+color_t Color_rgb_1i(u32 c) {
   return (color_t) {
     .r = (float)((c & 0x00ff0000) >> 16) / 255.0f,
     .g = (float)((c & 0x0000ff00) >> 8)  / 255.0f,
@@ -29,7 +29,7 @@ color_t Color_rgb_1i(unsigned int c) {
   };
 }
 
-color_t color_rgb_4f(float r, float g, float b, float a) {
+color_t color_rgb_4f(f32 r, f32 g, f32 b, f32 a) {
   return (color_t) {
     .r = r,
     .g = g,
@@ -38,7 +38,7 @@ color_t color_rgb_4f(float r, float g, float b, float a) {
   };
 }
 
-color_t color_rgb_3f(float r, float g, float b) {
+color_t color_rgb_3f(f32 r, f32 g, f32 b) {
   return (color_t) {
     .r = r,
     .g = g,
@@ -47,7 +47,7 @@ color_t color_rgb_3f(float r, float g, float b) {
   };
 }
 
-color_t Color_hsv(unsigned int h, unsigned int s, unsigned int v) {
+color_t Color_hsv(u32 h, u32 s, u32 v) {
   while (h > 360) { h -= 360; }
   while (s > 100) { s -= 100; }
   while (v > 100) { v -= 100; }
@@ -109,11 +109,11 @@ color_t Color_hsv(unsigned int h, unsigned int s, unsigned int v) {
   };
 }
 
-unsigned char Chanel_to_u8(float c) {
+u8 Chanel_to_u8(f32 c) {
   return (unsigned char)(c * 255.0f);
 }
 
-static float __hue_to_channel(float p, float q, float t) {
+static f32 __hue_to_channel(f32 p, f32 q, f32 t) {
   if (t < 0.0f) { t += 1.0f; }
   if (t > 1.0f) { t -= 1.0f; }
   
@@ -123,7 +123,7 @@ static float __hue_to_channel(float p, float q, float t) {
   return p;
 }
 
-color_t Color_hsl(unsigned int h, unsigned int s, unsigned int l) {
+color_t Color_hsl(u32 h, u32 s, u32 l){
   while (h > 360) { h -= 360; }
   while (s > 100) { s -= 100; }
   while (l > 100) { l -= 100; }
