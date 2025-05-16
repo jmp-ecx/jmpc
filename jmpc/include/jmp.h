@@ -9,5 +9,6 @@
 #include <jmp/dbg.h>
 #include <jmp/ll.h>
 #include <jmp/arr.h>
+#include <jmp/color.h>
 
 #endif // __JMPC_H

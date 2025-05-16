@@ -25,7 +25,7 @@ lib_src   = [ 'impl/types',
               'impl/os',
               'impl/ll',
               'impl/arr',
-              'impl/color', ]
+              'impl/color', ] # TODO - use PathLib to get all files.
 opt_src   = [ 'impl/opt/render',
               'impl/opt/debug', ]
 lib_obj   = []

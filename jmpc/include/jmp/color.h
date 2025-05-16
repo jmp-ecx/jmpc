@@ -3,17 +3,20 @@
 
 #include <jmp.h>
 
-typedef struct Rgb {
-  u8 r, g, b, a;
-} rgb_c;
+typedef struct Color {
+  float r, g, b, a;
+} color_t;
 
-typedef struct Hsv {
-  f32 h, s, v;
-} hsv_c;
+color_t Color_rgba_4i(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+color_t Color_rgb_3i(unsigned char r, unsigned char g, unsigned char b);
+color_t Color_rgb_1i(unsigned int c);
 
-rgb_c hsv_to_rgb(hsv_c hsv);
+color_t color_rgb_4f(float r, float g, float b, float a);
+color_t color_rgb_3f(float r, float g, float b);
 
-rgb_c rgb_interpolate(rgb_c a, rgb_c b, f32 fraction);
-u32 rgb_to_hex(rgb_c rgb);
+color_t Color_hsv(unsigned int h, unsigned int s, unsigned int v);
+color_t Color_hsl(unsigned int h, unsigned int s, unsigned int l);
 
-#endif // __JMP_COLOR_H
+unsigned char Chanel_to_u8(float c);
+
+#endif // __JMPC_COLOR_H

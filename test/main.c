@@ -3,16 +3,13 @@
 #include <jmp.h>
 
 int main( void ) {
-  rbuf_t *buf = rbuf_new(16, 4);
+  color_t col = Color_hsv(278, 47, 89);
   
-  int a = 13;
-  int b = 255;
+  u8 r = Chanel_to_u8(col.r);
+  u8 g = Chanel_to_u8(col.g);
+  u8 b = Chanel_to_u8(col.b);
   
-  rbuf_write(buf, (void*)a);
-  rbuf_write(buf, (void*)b);
-  
-  printf("%d\n", rbuf_read(buf, int));
-  printf("%d\n", rbuf_read(buf, int));
+  printf("Color :: %u %u %u\n", r, g, b);
   
   return 0;
 }

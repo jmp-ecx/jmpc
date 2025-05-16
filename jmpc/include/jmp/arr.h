@@ -3,7 +3,7 @@
 
 #include <jmp.h>
 
-typedef struct {
+typedef struct DynamicArray {
   sz  cap;
   sz  size;
   sz  data_sz;
