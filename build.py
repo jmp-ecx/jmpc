@@ -14,6 +14,7 @@ if args[0] == 'help':
     test-only :: Only builds the test files.
     opt       :: Include optional utilities.
   ''')
+  quit(0) 
 
 bin_dir   =   'bin'
 build_dir =   'build'
